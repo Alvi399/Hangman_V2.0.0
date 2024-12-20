@@ -70,7 +70,7 @@ class Data(AbstractPlayer, IMekanisme):
 
 
     def initialize_questions(self):
-        file_path = r"D:\Program\Semester 3\OOP\Final Project UTS_Kelompok 8\bankSoal.txt"
+        file_path = r"./bankSoal.txt"
         try:
             with open(file_path, "r") as file:
                 lines = [line.strip() for line in file if line.strip()]  # Hilangkan baris kosong
@@ -81,7 +81,7 @@ class Data(AbstractPlayer, IMekanisme):
                 words = lines[i + 1:i + 11]  # Ambil 10 kata berikutnya
                 self.questions.append([topic] + words)
 
-            print("Questions loaded:", self.questions)  # Debugging
+            # print("Questions loaded:", self.questions)  # Debugging
         except FileNotFoundError:
             print("File soal tidak ditemukan.")
         except IndexError:
@@ -132,7 +132,7 @@ class Data(AbstractPlayer, IMekanisme):
             print(f"Huruf '{input_letter}' tidak ditemukan.")
 
     def read_leaderboard(self):
-        file_path = r"D:\Program\Semester 3\OOP\Final Project UTS_Kelompok 8\leaderBoard.txt"
+        file_path = r"./leaderBoard.txt"
         try:
             with open(file_path, "r") as file:
                 for i, line in enumerate(file):
