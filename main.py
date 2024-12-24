@@ -9,7 +9,7 @@ def main():
     pygame.init()
 
     # Screen setup
-    screen_width, screen_height = 800, 600
+    screen_width, screen_height = 900, 500
     screen = pygame.display.set_mode((screen_width, screen_height))
     pygame.display.set_caption("Hangman Landing Page")
 
