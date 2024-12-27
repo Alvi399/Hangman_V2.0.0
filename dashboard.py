@@ -2,6 +2,7 @@ import pygame
 import sys
 import threading
 import os
+from game import Game
 
 def run_setting():
     os.system("setting.py")
@@ -90,9 +91,11 @@ def main():
                 if play_button_rect.collidepoint(event.pos):
                     print("Play button clicked")
                     # threading.Thread(target=run_setting).start()
+                    game = Game()
+                    game.run()
                 if setting_icon_react.collidepoint(event.pos):
                     print("Settings icon clicked")
-                    threading.Thread(target=run_setting).start()
+                    # threading.Thread(target=run_setting).start()
                 if tropy_icon_react.collidepoint(event.pos):
                     print("Tropy is clicked")
         pygame.display.flip()

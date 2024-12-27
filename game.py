@@ -1,51 +1,82 @@
 import pygame
-import os
+from constants import screen, WHITE, clock, FPS
+from game_data import GameData
+from ui_renderer import UIRenderer
 
-# Warna background
-bg = (255, 255, 255)  # Putih
+class Game(GameData):
+    def __init__(self):
+        super().__init__()
+        self.username = ""
+        self.total_score = 0
+        self.is_solved = False
+        self.is_game_over = False
+        self.game_state = "USERNAME"  # States: USERNAME, PLAYING, GAMEOVER
+        
+        # TODO: Load UI assets
+        # self.button_bg = pygame.image.load("assets/button.png")
+        # self.input_box_bg = pygame.image.load("assets/input_box.png")
+        # self.background = pygame.image.load("assets/background.png")
 
-# Inisialisasi Pygame
-pygame.init()
+    def handle_username_input(self, event):
+        if event.key == pygame.K_RETURN and self.username:
+            self.game_state = "PLAYING"
+            self.initialize_questions()
+            self.generate_question()
+            self.progress = ["-"] * len(self.current_question[1])
+            self.get_letters(self.current_question[1])
+        elif event.key == pygame.K_BACKSPACE:
+            self.username = self.username[:-1]
+        else:
+            if len(self.username) < 10:
+                self.username += event.unicode
 
-# Buat layar
-screen_width, screen_height = 900, 500
-screen = pygame.display.set_mode((screen_width, screen_height))
-pygame.display.set_caption("Asekk")
+    def handle_game_input(self, event):
+        if event.unicode.isalpha():
+            self.check_input(event.unicode.lower())
+            if "-" not in self.progress:
+                self.is_solved = True
+                self.total_score += int(self.current_question[2])
+                self.generate_question()
+                self.progress = ["-"] * len(self.current_question[1])
+                self.get_letters(self.current_question[1])
+                self.is_solved = False
+            if self.chances == 0:
+                self.game_state = "GAMEOVER"
+                self.read_leaderboard()
+                self.update_leaderboard(self.username, self.total_score)
 
-# Muat gambar hangman
-image_path = ["./Asset/h1.png", "./Asset/h2.png", "./Asset/h3.png", "./Asset/h4.png", "./Asset/h5.png"]
-images = []
-position = (screen_width // 2 - 50, screen_height // 2 - 50)
+    def run(self):
+        running = True
+        while running:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+                
+                if event.type == pygame.KEYDOWN:
+                    if self.game_state == "USERNAME":
+                        self.handle_username_input(event)
+                    elif self.game_state == "PLAYING":
+                        self.handle_game_input(event)
+                    elif self.game_state == "GAMEOVER" and event.key == pygame.K_RETURN:
+                        running = False
 
-for path in image_path:
-    if not os.path.exists(path):
-        print(f"File not found: {path}")  # Debugging jika file tidak ditemukan
-    else:
-        image = pygame.image.load(path)
-        image = pygame.transform.scale(image, (100, 100))  # Ubah ukuran gambar
-        images.append({"image": image, "pos": position})
+            screen.fill(WHITE)
 
-# Variabel game
-running = True
-death = 0
+            if self.game_state == "USERNAME":
+                UIRenderer.draw_username_screen(self.username)
+            elif self.game_state == "PLAYING":
+                UIRenderer.draw_game_screen(
+                    self.current_question,
+                    self.chances,
+                    self.progress,
+                    self.guessed_letters,
+                    self.total_score
+                )
+                self.draw_hangman(self.chances)
+            elif self.game_state == "GAMEOVER":
+                UIRenderer.draw_game_over_screen(self.total_score, self.display_leaderboard())
 
-while running:
-    # Bersihkan layar
-    screen.fill(bg)
+            pygame.display.flip()
+            clock.tick(FPS)
 
-    # Tampilkan gambar sesuai indeks "death"
-    screen.blit(images[death]["image"], images[death]["pos"])
-
-    # Membaca event di dalam game
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-            death = (death + 1) % len(images)  # Pergantian gambar
-            print("berhasil di klik")
-
-    # Perbarui tampilan layar
-    pygame.display.flip()
-
-# Keluar dari Pygame
-pygame.quit()
+        pygame.quit()
