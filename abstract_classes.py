@@ -37,3 +37,4 @@ class IMekanisme(ABC):
     @abstractmethod
     def check_input(self, input_letter):
         pass
+

@@ -1,6 +1,7 @@
 import random
+import pygame
 from abstract_classes import AbstractPlayer, IMekanisme
-
+from constants import screen
 class GameData(AbstractPlayer, IMekanisme):
     def __init__(self):
         super().__init__()
@@ -10,15 +11,18 @@ class GameData(AbstractPlayer, IMekanisme):
         self.progress = []
         self.chances = 5
         # TODO: Load hangman images
-        # self.hangman_images = [
-        #     pygame.image.load("assets/hangman0.png"),  # Empty gallows
-        #     pygame.image.load("assets/hangman1.png"),  # Head
-        #     pygame.image.load("assets/hangman2.png"),  # Body
-        #     pygame.image.load("assets/hangman3.png"),  # One arm
-        #     pygame.image.load("assets/hangman4.png"),  # Two arms
-        #     pygame.image.load("assets/hangman5.png"),  # One leg
-        #     pygame.image.load("assets/hangman6.png")   # Complete hangman
-        # ]
+        self.hangman_images = [
+            pygame.image.load("./Asset/h1.png"),  # Empty gallows
+            pygame.image.load("./Asset/h2.png"),  # Head
+            pygame.image.load("./Asset/h3.png"),  # Body
+            pygame.image.load("./Asset/h4.png"),  # One arm
+            pygame.image.load("./Asset/h5.png"),  # Two arms
+            pygame.image.load("./Asset/settings_icon.png"),  # One leg
+            pygame.image.load("./Asset/trophy_icon.png")   # Complete hangman
+        ]
+
+        #transform icon size to 50x50
+        self.hangman_images = [pygame.transform.scale(image, (50, 50)) for image in self.hangman_images]
 
     def initialize_questions(self):
         file_path = r"./Data/bankSoal.txt"
@@ -51,18 +55,10 @@ class GameData(AbstractPlayer, IMekanisme):
             str(self.scores[score_index]),
         ]
 
-    def get_letters(self, word):
-        self.guessed_letters = [""] * 15
-        unique_letters = list(set(word))
-        random.shuffle(unique_letters)
-
-        for i, letter in enumerate(unique_letters):
-            self.guessed_letters[i] = letter
-
-        while "" in self.guessed_letters:
-            self.guessed_letters[self.guessed_letters.index("")] = chr(
-                random.randint(97, 122)
-            )
+    def get_letters(self):
+        self.guessed_letters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j",
+                                "k", "l", "m", "n", "o", "p", "q", "r", "s", "t",
+                                "u", "v", "w", "x", "y", "z"] 
 
     def check_input(self, input_letter):
         found = False
@@ -79,7 +75,7 @@ class GameData(AbstractPlayer, IMekanisme):
 
     def draw_hangman(self, attempts_left):
         # TODO: Draw hangman image based on attempts_left
-        # screen.blit(self.hangman_images[5 - attempts_left], (50, 50))
+        screen.blit(self.hangman_images[5 - attempts_left], (50, 50))
         pass
 
     def read_leaderboard(self):
@@ -101,3 +97,4 @@ class GameData(AbstractPlayer, IMekanisme):
 
     def display_leaderboard(self):
         return self.topPlayer
+    
