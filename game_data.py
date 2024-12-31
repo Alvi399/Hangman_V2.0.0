@@ -55,10 +55,13 @@ class GameData(AbstractPlayer, IMekanisme):
             str(self.scores[score_index]),
         ]
 
-    def get_letters(self):
-        self.guessed_letters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j",
-                                "k", "l", "m", "n", "o", "p", "q", "r", "s", "t",
-                                "u", "v", "w", "x", "y", "z"] 
+    # Update get_letters method to include all alphabet letters
+    def get_letters(self, word):
+        alphabet = set("abcdefghijklmnopqrstuvwxyz")
+        word_letters = set(word)
+        unused_letters = alphabet - word_letters
+        self.guessed_letters = list(word_letters) + list(unused_letters)
+        self.guessed_letters.sort()
 
     def check_input(self, input_letter):
         found = False
@@ -75,7 +78,7 @@ class GameData(AbstractPlayer, IMekanisme):
 
     def draw_hangman(self, attempts_left):
         # TODO: Draw hangman image based on attempts_left
-        screen.blit(self.hangman_images[5 - attempts_left], (50, 50))
+        screen.blit(self.hangman_images[5 - attempts_left], (300, 300))
         pass
 
     def read_leaderboard(self):
@@ -97,4 +100,3 @@ class GameData(AbstractPlayer, IMekanisme):
 
     def display_leaderboard(self):
         return self.topPlayer
-    
