@@ -21,9 +21,9 @@ class Game(GameData):
         self.trophy_icon_rect = pygame.Rect((10, WINDOW_HEIGHT - 50), (40, 40)) #pojok kiri bawah
         self.hint_button_rect = pygame.Rect((10, WINDOW_HEIGHT - 50), (80, 40))  # Hint button
 
-        self.resume_button_rect = pygame.Rect((WINDOW_WIDTH//2 - 300, WINDOW_HEIGHT//2), (200, 100)) #kiri
-        self.restart_button_rect = pygame.Rect((WINDOW_WIDTH//2 - 100, WINDOW_HEIGHT//2), (200, 100)) #tengah
-        self.home_button_rect = pygame.Rect((WINDOW_WIDTH//2 + 100, WINDOW_HEIGHT//2), (200, 100)) #kanan
+        self.resume_button_rect = pygame.Rect((WINDOW_WIDTH//2 - 300, WINDOW_HEIGHT//2), (100, 100)) #kiri
+        self.restart_button_rect = pygame.Rect((WINDOW_WIDTH//2 - 100, WINDOW_HEIGHT//2), (100, 100)) #tengah
+        self.home_button_rect = pygame.Rect((WINDOW_WIDTH//2 + 100, WINDOW_HEIGHT//2), (100, 100)) #kanan
 
         self.pause_button_rect = pygame.Rect((WINDOW_WIDTH - 50, WINDOW_HEIGHT - 50), (40, 40)) #pojok kiri atas
         self.home_button_gameover_rect = pygame.Rect((WINDOW_WIDTH - 50, WINDOW_HEIGHT - 50), (200, 100)) #tengah
