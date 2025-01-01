@@ -12,17 +12,17 @@ class GameData(AbstractPlayer, IMekanisme):
         self.chances = 5
         # TODO: Load hangman images
         self.hangman_images = [
-            pygame.image.load("./Asset/h1.png"),  # Empty gallows
-            pygame.image.load("./Asset/h2.png"),  # Head
-            pygame.image.load("./Asset/h3.png"),  # Body
-            pygame.image.load("./Asset/h4.png"),  # One arm
-            pygame.image.load("./Asset/h5.png"),  # Two arms
-            pygame.image.load("./Asset/settings_icon.png"),  # One leg
-            pygame.image.load("./Asset/trophy_icon.png")   # Complete hangman
+            pygame.image.load("./Asset/phase1.png"),  # Empty gallows
+            pygame.image.load("./Asset/phase2.png"),  # Head
+            pygame.image.load("./Asset/phase3.png"),  # Body
+            pygame.image.load("./Asset/phase4.png"),  # One arm
+            pygame.image.load("./Asset/phase5.png"),  # Two arms
+            pygame.image.load("./Asset/phase6.png"),  # One leg
+            pygame.image.load("./Asset/phase7.png")   # Complete hangman
         ]
 
         #transform icon size to 50x50
-        self.hangman_images = [pygame.transform.scale(image, (50, 50)) for image in self.hangman_images]
+        # self.hangman_images = [pygame.transform.scale(image, (50, 50)) for image in self.hangman_images]
 
     def initialize_questions(self):
         file_path = r"./Data/bankSoal.txt"
@@ -78,7 +78,7 @@ class GameData(AbstractPlayer, IMekanisme):
 
     def draw_hangman(self, attempts_left):
         # TODO: Draw hangman image based on attempts_left
-        screen.blit(self.hangman_images[5 - attempts_left], (300, 300))
+        screen.blit(self.hangman_images[5 - attempts_left], (200, 150))
         pass
 
     def read_leaderboard(self):

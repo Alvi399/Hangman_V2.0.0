@@ -1,5 +1,5 @@
 import pygame
-from constants import screen, BLACK, WINDOW_WIDTH, WHITE
+from constants import screen, BLACK, WINDOW_WIDTH, WHITE, WINDOW_HEIGHT
 
 class UIRenderer:
     @staticmethod
@@ -27,20 +27,20 @@ class UIRenderer:
         
         UIRenderer.draw_text(f"Topic: {current_question[0]}", 32, WINDOW_WIDTH//2, 80)
 
-        UIRenderer.draw_text(f"Score: {current_question[2]}", 32, 100, 30)
-        UIRenderer.draw_text(f"Chances: {chances}", 32, WINDOW_WIDTH//2, 30)
+        UIRenderer.draw_text(f"Score: {current_question[2]}", 32, 100, 30,(0, 0, 255))
+        UIRenderer.draw_text(f"Chances: {chances}", 32, WINDOW_WIDTH//2, 30, (255, 0, 0))
         
         # Draw total score horizontally
         font = pygame.font.Font(None, 36)
-        score_text = font.render(f"Total Score: {total_score}", True, (0, 0, 0))
+        score_text = font.render(f"Total Score: {total_score}", True, (0, 0, 255))
         screen.blit(score_text, (WINDOW_WIDTH - score_text.get_width() - 20, 20))
         
-        coins_text = font.render(f"Coins: {game.coins}", True, (0, 0, 0))
+        coins_text = font.render(f"Coins: {game.coins}", True, (255, 215, 0)) #color gold (255, 215, 0)
         screen.blit(coins_text, (WINDOW_WIDTH - coins_text.get_width() - 20, 60))
         
 
         progress_text = " ".join(progress)
-        UIRenderer.draw_text(progress_text, 48, WINDOW_WIDTH//2, 400)
+        UIRenderer.draw_text(progress_text, 48, WINDOW_WIDTH//2, 450)
         
         letters_text = " ".join(guessed_letters)
         UIRenderer.draw_text(letters_text, 32, WINDOW_WIDTH//2, 500)
@@ -48,24 +48,20 @@ class UIRenderer:
 
        
     @staticmethod
-    def draw_game_over_screen(total_score, top_players, background, correct_answer, home_button, home_button_rect):
+    def draw_game_over_screen(total_score, background, correct_answer, home_button, home_button_rect, hangman_image):
         screen.blit(background, (0, 0))
         font = pygame.font.Font(None, 74)
         text = font.render("Game Over", True, (255, 0, 0))
         screen.blit(text, (250, 100))
 
-        score_text = font.render(f"Score: {total_score}", True, (0, 0, 0))
+        score_text = font.render(f"Score: {total_score}", True, (0, 0, 255))
         screen.blit(score_text, (280, 150))
 
-        answer_text = font.render(f"Answer: {correct_answer}", True, (0, 0, 0))
+        answer_text = font.render(f"Answer: {correct_answer}", True, (0, 255, 0))
         screen.blit(answer_text, (220, 200))
 
-        leaderboard_text = font.render("Leaderboard", True, (0, 0, 0))
-        screen.blit(leaderboard_text, (250, 300))
-
-        for i, (name, score) in enumerate(top_players[:5]):
-            player_text = font.render(f"{i+1}. {name}: {score}", True, (0, 0, 0))
-            screen.blit(player_text, (200, 350 + i * 50))
+        # Draw hangman image
+        screen.blit(hangman_image, (200, 300))
 
         screen.blit(home_button, home_button_rect)
 
@@ -89,41 +85,13 @@ class UIRenderer:
         screen.blit(trophy_icon, trophy_icon_rect)
 
         #draw title
-        UIRenderer.draw_text("HANGMAN", 64, WINDOW_WIDTH//2, 100)
+        UIRenderer.draw_text("HANGMAN", 64, WINDOW_WIDTH//2, 100, (0, 0, 255))
         #draw rope placeholder
         pygame.draw.line(screen, (0, 0, 255), (WINDOW_WIDTH // 2, 120), (WINDOW_WIDTH // 2, 180), 5)
         pygame.draw.circle(screen, (0, 0, 255), (WINDOW_WIDTH // 2, 190), 10, 2)
 
     @staticmethod
-    def draw_pause_screen(resume_button_rect, restart_button_rect, setting_button_rect, background_image, resume_button, restart_button, setting_button):
-        #transform icon size to rect size
-        resume_button = pygame.transform.scale(resume_button, (200, 100))
-        restart_button = pygame.transform.scale(restart_button, (200, 100))
-        setting_button = pygame.transform.scale(setting_button, (200, 100))
-        
-        #draw background game 
-        screen.blit(background_image, (0, 0))
-
-        #draw resume button
-        screen.blit(resume_button, resume_button_rect)
-
-        #draw restart button
-        screen.blit(restart_button, restart_button_rect)
-
-        #draw setting button
-        screen.blit(setting_button, setting_button_rect)
-
-        #draw title
-        UIRenderer.draw_text("PAUSE", 64, WINDOW_WIDTH//2, 50)
-        #draw rope placeholder
-        pygame.draw.line(screen, (0, 0, 255), (WINDOW_WIDTH // 2, 120), (WINDOW_WIDTH // 2, 180), 5)
-        pygame.draw.circle(screen, (0, 0, 255), (WINDOW_WIDTH // 2, 190), 10, 2)
-
-    @staticmethod
-    def draw_pause_screen(resume_button_rect, restart_button_rect, home_button_rect, background_image, resume_button, restart_button, home_button):
-        resume_button = pygame.transform.scale(resume_button, (200, 100))
-        restart_button = pygame.transform.scale(restart_button, (200, 100))
-        home_button = pygame.transform.scale(home_button, (200, 100))
+    def draw_pause_screen(resume_button_rect, restart_button_rect, home_button_rect, background_image, resume_button, restart_button, home_button, volume, volume_icon, volume_icon_rect, volume_slider_rect):
         
         screen.blit(background_image, (0, 0))
 
@@ -133,17 +101,43 @@ class UIRenderer:
 
         UIRenderer.draw_text("PAUSED", 64, WINDOW_WIDTH//2, 50)
 
+        # Draw volume icon
+        screen.blit(volume_icon, volume_icon_rect)
+
+        # Draw volume slider
+        slider_x = volume_slider_rect.x
+        slider_y = volume_slider_rect.y
+        slider_width = volume_slider_rect.width
+        slider_height = volume_slider_rect.height
+        pygame.draw.rect(screen, (200, 200, 200), (slider_x, slider_y, slider_width, slider_height))
+        pygame.draw.rect(screen, (0, 0, 0), (slider_x, slider_y, slider_width * volume, slider_height))
+
     @staticmethod
-    def draw_leaderboard_screen(leaderboard, background, back_button_rect):
+    def draw_leaderboard_screen(leaderboard, background, back_button_rect, volume, volume_slider_rect, volume_icon, volume_icon_rect):
         screen.blit(background, (0, 0))
         font = pygame.font.Font(None, 36)
-        y_offset = 100
+        y_offset = 110
         for i, (name, score) in enumerate(leaderboard):
             text = font.render(f"{i + 1}. {name}: {score}", True, (0, 0, 0))
             screen.blit(text, (100, y_offset))
             y_offset += 40
+        #draw title
+        UIRenderer.draw_text("Leaderboard", 64, WINDOW_WIDTH//2, 50)
 
         # Draw back button
         back_button_text = font.render("Back", True, (255, 255, 255))
         pygame.draw.rect(screen, (0, 0, 0), back_button_rect)
         screen.blit(back_button_text, (back_button_rect.x + 10, back_button_rect.y + 10))
+
+        # Draw volume icon
+        screen.blit(volume_icon, volume_icon_rect)
+
+        # Draw volume slider
+        slider_x = volume_slider_rect.x
+        slider_y = volume_slider_rect.y
+        slider_width = volume_slider_rect.width
+        slider_height = volume_slider_rect.height
+        pygame.draw.rect(screen, (200, 200, 200), (slider_x, slider_y, slider_width, slider_height))
+        pygame.draw.rect(screen, (0, 0, 0), (slider_x, slider_y, slider_width * volume, slider_height))
+
+
