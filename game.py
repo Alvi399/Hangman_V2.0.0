@@ -17,7 +17,7 @@ class Game(GameData):
         
         # UI elements
         self.back_button_react = pygame.Rect((10, 10), (40, 40))
-        self.play_button_rect = pygame.Rect((WINDOW_WIDTH//2 - 50, WINDOW_HEIGHT//2), (200, 200)) #tengah
+        self.play_button_rect = pygame.Rect((WINDOW_WIDTH//2 - 90, WINDOW_HEIGHT//2 - 20), (200, 200)) #tengah
         self.setting_icon_rect = pygame.Rect((WINDOW_WIDTH - 50, 10), (40, 40)) #pojok kanan atas
         self.trophy_icon_rect = pygame.Rect((10, WINDOW_HEIGHT - 50), (40, 40)) #pojok kiri bawah
         self.hint_button_rect = pygame.Rect((10, WINDOW_HEIGHT - 50), (80, 40))  # Hint button

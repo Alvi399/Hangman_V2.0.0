@@ -68,9 +68,9 @@ class UIRenderer:
     @staticmethod
     def draw_dashboard_screen(play_button_rect, setting_icon_rect, trophy_icon_rect, background_image, play_button, setting_icon, trophy_icon):
         #transform icon size to rect size
-        setting_icon = pygame.transform.scale(setting_icon, (40, 40))
-        trophy_icon = pygame.transform.scale(trophy_icon, (40, 40))
-        play_button = pygame.transform.scale(play_button, (100, 100))
+        # setting_icon = pygame.transform.scale(setting_icon, (40, 40))
+        # trophy_icon = pygame.transform.scale(trophy_icon, (40, 40))
+        # play_button = pygame.transform.scale(play_button, (100, 100))
         
         #draw background game 
         screen.blit(background_image, (0, 0))
